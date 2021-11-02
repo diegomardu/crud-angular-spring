@@ -1,18 +1,21 @@
 import { Course } from './../model/course';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { tap } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
 
+  private readonly API = "/assets/courses.json"
+
   constructor(private httpClient: HttpClient) { }
 
-  list(): Course[]{
-
-    return [{
-      _id:'1', name: 'Angular', category: 'Front-end'
-    },{_id:'2', name: 'Java - Springboot', category: 'Back-end'}];
+  list(){
+    return this.httpClient.get<Course[]>(this.API)
+    .pipe(
+      tap(courses => console.log(courses))
+    );
   }
 }
